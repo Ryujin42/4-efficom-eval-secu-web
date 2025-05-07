@@ -1,4 +1,6 @@
 const express = require('express');
+const rateLimit = require('express-rate-limit');
+
 const app = express();
 const userRouter = require('./route/user.route.js');
 const authRouter = require('./route/auth.route.js');
@@ -15,6 +17,14 @@ const database = async () => {
 database();
 
 app.use(express.json());
+
+const limiter = rateLimit({
+    windowMs: 10 * 60 * 1000,
+    max: 100,
+    message: 'Too many requests from this IP, please try again after 10 minutes',
+})
+
+app.use(limiter);
 
 app.use('/user',userRouter);
 app.use('/auth',authRouter);
