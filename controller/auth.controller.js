@@ -1,6 +1,7 @@
 const User = require('./../model/user.model.js');
 const bcrypt = require('bcrypt');
 const jwt = require('jsonwebtoken');
+require('dotenv').config();
 
 const login = (req, res, next) => {
     let user = User.getByEmail(req.body.email);
@@ -17,7 +18,7 @@ const login = (req, res, next) => {
             id: user.id,
             email: user.email,
             roles: user.roles
-        }, "ZXZhbCBzZWN1IHdlYg==")
+        }, process.env.JWT_KEY)
     });
 }
 
